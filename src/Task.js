@@ -1,11 +1,18 @@
 import React from "react";
+import { formatDistanceToNow , differenceInDays } from 'date-fns'
+import { tr } from 'date-fns/locale'
+import { date } from "yup";
 
 const Task = ({ taskObj, onComplete }) => {
+  const deadline = new Date(taskObj.deadline)
+  const formatDeadline = formatDistanceToNow(deadline, {addSuffix:true, locale:tr})
 
+  const isCloseToDeadline = differenceInDays(deadline,new Date()) <= 3
+ 
   return (
     <div className="task">
       <h3>{taskObj.title}</h3>
-      <div className="deadline">son teslim: <span>{taskObj.deadline}</span></div>
+      <div className="deadline">son teslim: <span className={isCloseToDeadline ? "kirmizi" :"beyaz"}>{formatDeadline}</span></div>
       <p>{taskObj.description}</p>
       <div>
         {taskObj.people.map((p) => (
